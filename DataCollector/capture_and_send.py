@@ -11,6 +11,7 @@ import datetime
 # current device, assign a value in cam_port
 # variable according to that
 def capture_image_and_send():
+    buffer = 0
     ts = datetime.datetime.now().timestamp()
     cam_port = 0
     cam = cv2.VideoCapture(cam_port)
