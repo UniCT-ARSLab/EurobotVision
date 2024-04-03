@@ -21,8 +21,7 @@ def capture_30min():
         if count >= 60:
             break
         capture_and_send.capture_image_and_send()
-        print("sono dentro")
-    print("ho finito")
+        time.sleep(30)
 
 
 def capture_until_stop():
