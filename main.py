@@ -60,6 +60,7 @@ if __name__ == "__main__":
             IsCaptureOn = False
             t.stop()
             t1.stop()
+            bot.reply_to(message, "turned off")
         else:
             bot.reply_to(message, "already off")
 
