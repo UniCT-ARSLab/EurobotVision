@@ -12,7 +12,7 @@ import datetime
 # variable according to that
 def capture_image_and_send():
     ts = datetime.datetime.now().timestamp()
-    cam_port = 1
+    cam_port = 0
     cam = cv2.VideoCapture(cam_port)
     cam.set(3, 1280)
     cam.set(4, 960)
