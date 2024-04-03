@@ -2,7 +2,7 @@
 
 # importing OpenCV library
 import cv2
-import gdrive
+from . import gdrive
 import datetime
 
 
@@ -14,8 +14,8 @@ def capture_image_and_send():
     ts = datetime.datetime.now().timestamp()
     cam_port = 1
     cam = cv2.VideoCapture(cam_port)
-    cam.set(3, 1920)
-    cam.set(4, 1080)
+    cam.set(3, 1280)
+    cam.set(4, 960)
 
     # reading the input using the camera
     result, image = cam.read()

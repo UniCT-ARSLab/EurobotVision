@@ -1,4 +1,3 @@
 opencv-python
 google-api-python-client
-telegram
-python-telegram-bot
+telebot
