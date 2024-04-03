@@ -33,3 +33,4 @@ def capture_image_and_send():
         print("No image detected.")
 
     gdrive.upload_photo(name, buffer)
+    cam.release()
