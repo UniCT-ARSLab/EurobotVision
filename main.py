@@ -6,8 +6,14 @@ import threading
 from DataCollector import capture_and_send
 from DataCollector import gdrive
 
+IsCaptureOn = False
+StopCapture = False
+t = None
+
 
 def capture_30min():
+    global IsCaptureOn
+    global StopCapture
     IsCaptureOn = True
     count = 0
     while StopCapture is False:
@@ -15,19 +21,20 @@ def capture_30min():
         if count >= 60:
             break
         capture_and_send.capture_image_and_send()
-        time.sleep(30)
+        print("sono dentro")
+    print("ho finito")
 
 
-def capture_until_stop(message):
-    bot.reply_to(message, "Started capture")
+def capture_until_stop():
+    global StopCapture
+    global IsCaptureOn
+    IsCaptureOn = True
     while StopCapture is False:
         capture_and_send.capture_image_and_send()
         time.sleep(60)
 
 
 if __name__ == "__main__":
-    IsCaptureOn = False
-    StopCapture = False
     with open("./Config/config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.SafeLoader)
 
@@ -37,29 +44,38 @@ if __name__ == "__main__":
 
     @bot.message_handler(commands=["30start"])
     def start_30thread(message):
+        global StopCapture
+        global IsCaptureOn
+        global t
         if IsCaptureOn is False:
             StopCapture = False
-            bot.reply_to(message, "started capturing for 30 minutes")
             t = threading.Thread(target=capture_30min)
             t.start()
+            bot.reply_to(message, "started capturing for 30 minutes")
         else:
             bot.reply_to(message, "already started write /stop")
 
     @bot.message_handler(commands=["StartCapture"])
     def start_capture(message):
+        global StopCapture
+        global IsCaptureOn
+        global t
         if IsCaptureOn is False:
-            t1 = threading.Thread(target=capture_until_stop, args=(message))
-            t1.start()
+            t = threading.Thread(target=capture_until_stop)
+            t.start()
+            bot.reply_to(message, "Started always on")
         else:
             bot.reply_to(message, "already started capture write /stop")
 
     @bot.message_handler(commands=["StopCapture"])
     def stop_capture(message):
+        global StopCapture
+        global IsCaptureOn
+        global t
         if StopCapture is False:
             StopCapture = True
             IsCaptureOn = False
-            t.stop()
-            t1.stop()
+            t.join()
             bot.reply_to(message, "turned off")
         else:
             bot.reply_to(message, "already off")
