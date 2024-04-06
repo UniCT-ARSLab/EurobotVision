@@ -2,3 +2,4 @@ opencv-python~=4.9.0.80
 google-api-python-client~=2.125.0
 pyTelegramBotAPI~=4.16.1
 PyYAML~=6.0.1
+Pillow~=10.3.0
