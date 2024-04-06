@@ -1,10 +1,8 @@
-import os
 import time
 import yaml
 import telebot
 import threading
-from DataCollector import capture_and_send
-from DataCollector import gdrive
+from data_collector import capture_and_send
 
 IsCaptureOn = False
 StopCapture = False
@@ -34,7 +32,7 @@ def capture_until_stop():
 
 
 if __name__ == "__main__":
-    with open("./Config/config.yaml", "r") as file:
+    with open("config/config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.SafeLoader)
 
     api_key = config["apikey"]
