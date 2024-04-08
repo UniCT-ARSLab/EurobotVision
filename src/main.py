@@ -32,7 +32,7 @@ def _peek(message: Message, bot: TeleBot) -> None:
         image_bytes.name = 'peek.jpeg'
         peek.save(image_bytes, 'JPEG')
         image_bytes.seek(0)
-        bot.send_photo(message.chat.id, photo=image_bytes)
+        bot.send_photo(message.chat.id, photo=image_bytes, message_thread_id=message.message_thread_id)
     else:
         bot.send_message(message.chat.id, "Unable to capture image",
                          message_thread_id=message.message_thread_id)
