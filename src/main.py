@@ -34,7 +34,8 @@ def _peek(message: Message, bot: TeleBot) -> None:
         image_bytes.seek(0)
         bot.send_photo(message.chat.id, photo=image_bytes)
     else:
-        bot.send_message(message.chat.id, "Unable to capture image")
+        bot.send_message(message.chat.id, "Unable to capture image",
+                         message_thread_id=message.message_thread_id)
 
 
 def capture_job(duration: int) -> None:
@@ -86,7 +87,8 @@ def _start_capture_process(message: Message, bot: TeleBot) -> None:
     current_status = CaptureStatus.RUNNING
     capture_thread = threading.Thread(target=capture_job, args=(capture_thread_duration,))
     capture_thread.start()
-    bot.send_message(message.chat.id, "Capture service started")
+    bot.send_message(message.chat.id, "Capture service started",
+                     message_thread_id=message.message_thread_id)
 
 
 def _stop_capture_service(message: Message, bot: TeleBot) -> None:
@@ -102,7 +104,7 @@ def _stop_capture_service(message: Message, bot: TeleBot) -> None:
         current_status = CaptureStatus.NOT_STARTED
         capture_thread_duration = -1
         text = "Capture service stopped"
-    bot.send_message(message.chat.id, text)
+    bot.send_message(message.chat.id, text, message_thread_id=message.message_thread_id)
 
 
 def _get_status(message: Message, bot: TeleBot, ) -> None:
@@ -118,7 +120,8 @@ def _get_status(message: Message, bot: TeleBot, ) -> None:
         duration = ""
     else:
         duration = f" for {capture_thread_duration} minutes"
-    bot.send_message(message.chat.id, f"Capture status is <b>{current_status}{duration}</b>")
+    bot.send_message(message.chat.id, f"Capture status is <b>{current_status}{duration}</b>",
+                     message_thread_id=message.message_thread_id)
 
 
 def _retrieve_api_key() -> str | None:
@@ -163,7 +166,8 @@ def _register_handlers(bot: TeleBot) -> None:
 
     :param bot: The bot object
     """
-    bot.message_handler(commands=["start"])(lambda message: bot.send_message(message.chat.id, "Hello!"))
+    bot.message_handler(commands=["start"])(lambda message: bot.send_message(message.chat.id, "Hello!",
+                                                                             message_thread_id=message.message_thread_id))
     bot.register_message_handler(_get_status, commands=["status"], pass_bot=True)
     bot.register_message_handler(_stop_capture_service, commands=["stop"], pass_bot=True)
     bot.register_message_handler(_start_capture_process, commands=["capture"], pass_bot=True)
