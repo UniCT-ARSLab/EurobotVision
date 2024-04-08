@@ -36,5 +36,4 @@ def get_camera_image() -> Image.Image | None:
     :return: A PIL Image object if the image was captured successfully, None otherwise
     """
     result, image = camera.read()
-    result_encode, buffer = cv2.imencode('.jpg', image) if result else (False, None)
-    return Image.fromarray(buffer) if result_encode else None
+    return Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) if result else None

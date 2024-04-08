@@ -21,5 +21,5 @@ drive_service = build("drive", "v3", credentials=credentials)
 def upload_photo(image: Image) -> None:
     name: str = f"{datetime.datetime.now().timestamp()}.jpg"
     file_metadata = {"name": name, "parents": [PARENT_FOLDER_ID]}
-    media = MediaIoBaseUpload(io.BytesIO(image.tobytes()), mimetype="image/jpeg")
+    media = MediaIoBaseUpload(image.tobytes(), mimetype="image/jpeg")
     _ = drive_service.files().create(body=file_metadata, media_body=media).execute()
