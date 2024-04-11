@@ -1,5 +1,5 @@
 import cv2
-from PIL import Image
+from numpy import ndarray
 
 camera: cv2.VideoCapture | None = None
 
@@ -30,10 +30,13 @@ def release_camera() -> None:
     camera = None
 
 
-def get_camera_image() -> Image.Image | None:
+def get_camera_image() -> ndarray | None:
     """
     This function captures an image from the camera
     :return: A PIL Image object if the image was captured successfully, None otherwise
     """
     result, image = camera.read()
-    return Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) if result else None
+    if not result:
+        return None
+    result, image_encoded = cv2.imencode(".jpg", image)
+    return image_encoded if result else None
