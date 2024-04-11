@@ -53,7 +53,7 @@ def capture_job(bot: TeleBot, chat_id: int, chat_thread_id: int, duration: int) 
     global current_status, capture_thread_duration
     internal_counter: int = 0
     endless = duration == 0
-    duration = duration * 60
+    duration *= 60
     try:
         while current_status != CaptureStatus.NOT_STARTED:
             if internal_counter == 0:
